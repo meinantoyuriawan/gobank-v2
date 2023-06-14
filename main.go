@@ -20,11 +20,14 @@ func main() {
 	r.HandleFunc("/logout", accountcontroller.Logout).Methods("GET")
 	authwall := r.PathPrefix("/authwall").Subrouter()
 	authwall.HandleFunc("/create", accountcontroller.Createaccount).Methods("POST")
+	authwall.HandleFunc("/saldo", transactioncontroller.Getsaldo).Methods("POST")
+	authwall.HandleFunc("/transfer", transactioncontroller.Transfer).Methods("POST")
+	authwall.HandleFunc("/recent", transactioncontroller.Getrecent).Methods("POST")
 	authwall.Use(auth.ValidateJWT)
 
-	r.HandleFunc("/saldo", transactioncontroller.Getsaldo).Methods("GET")
-	r.HandleFunc("/transfer", transactioncontroller.Transfer).Methods("POST")
-	r.HandleFunc("/recent", transactioncontroller.Getrecent).Methods("GET")
+	// r.HandleFunc("/saldo", transactioncontroller.Getsaldo).Methods("GET")
+	// r.HandleFunc("/transfer", transactioncontroller.Transfer).Methods("POST")
+	// r.HandleFunc("/recent", transactioncontroller.Getrecent).Methods("GET")
 
 	log.Fatal(http.ListenAndServe(":8080", r))
 }

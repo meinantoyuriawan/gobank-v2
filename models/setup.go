@@ -10,7 +10,7 @@ var DB *gorm.DB
 func ConnectDB() {
 	// URL := fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8&parseTime=True&loc=Local", USER, PASS, HOST, DBNAME)
 	// root:sample-password@tcp(db:3306)/jwt_auth
-	db, err := gorm.Open(mysql.Open("root:gobankpassword@tcp(localhost:3306)/gobank"))
+	db, err := gorm.Open(mysql.Open("root:gobankpassword@tcp(localhost:3306)/gobank?parseTime=true"))
 
 	if err != nil {
 		panic(err)
@@ -18,5 +18,7 @@ func ConnectDB() {
 
 	db.AutoMigrate(&User{})
 	db.AutoMigrate(&Account{})
+	db.AutoMigrate(&Status{})
+	db.AutoMigrate(&Activity{})
 	DB = db
 }

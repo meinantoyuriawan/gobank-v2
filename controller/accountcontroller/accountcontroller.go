@@ -111,6 +111,20 @@ func Createaccount(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// create status db relation
+	userStatus := models.Status{
+		UserId:     userInput.UserId,
+		AccNumber:  userInput.Number,
+		PinAttempt: 2,
+		IsBlocked:  0,
+	}
+
+	if err := models.DB.Create(&userStatus).Error; err != nil {
+		response := map[string]string{"message": err.Error()}
+		helper.ResponseJSON(w, http.StatusInternalServerError, response)
+		return
+	}
+
 	response := map[string]string{"message": "success"}
 	helper.ResponseJSON(w, http.StatusOK, response)
 }
